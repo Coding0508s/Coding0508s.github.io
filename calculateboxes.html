@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrapeH BOX CALCULATOR</title>
+    <style>
+        body {
+            font-family: '맑은 고딕', sans-serif;
+            margin: 100px;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }   
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            display: block;
+            margin: 0 auto;
+           
+        }
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            color: #440b86;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            margin-left: 100px;
+            margin-right: 100px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+            margin-right: 10px;
+        }
+
+        select,
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        button {
+            background-color: #440b86;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-left: 180px;
+        }
+
+        button:hover {
+            background-color: #0ca22c;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .box-info {
+            color: #ffffff;
+            background-color: #da1717;
+            width: 140px;
+            display:block;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 15px;
+            text-align: center;
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+        .footer {
+            color: #c42323;
+           /*  background-color: #c12525; */
+            width: 100%;
+            display: block;
+            margin-left: 100px;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 11px;
+            text-align: center;
+            margin-left: 150px;
+           
+        }
+    </style>
+    <script>
+        const products = {
+            'littleseed': {
+                name: 'LS SongBook & GS REP',
+                items: [
+                    { id: 'songbook', name: 'LittleSEED SongBook', quantity: 50 },
+                    { id: 'Unit1 REP', name: 'Unit 1 REP', quantity: 28 },
+                    { id: 'Unit2 REP', name: 'Unit 2 REP', quantity: 34 },
+                    { id: 'Unit3 REP', name: 'Unit 3 REP', quantity: 30 },
+                    { id: 'Unit4 REP', name: 'Unit 4 REP', quantity: 50 },
+                    { id: 'Unit5 REP', name: 'Unit 5 REP', quantity: 50 },
+                    { id: 'Unit6 REP', name: 'Unit 6 REP', quantity: 32 },
+                    { id: 'Unit7 REP', name: 'Unit 7 REP', quantity: 50 },
+                    { id: 'Unit8 REP', name: 'Unit 8 REP', quantity: 50 },
+                    { id: 'Unit9 REP', name: 'Unit 9 REP', quantity: 50 },
+                    { id: 'Unit10 REP', name: 'Unit 10 REP', quantity: 50 },
+                    { id: 'Unit11 REP', name: 'Unit 11 REP', quantity: 50 },
+                    { id: 'Unit12 REP', name: 'Unit 12 REP', quantity: 50 },
+                    { id: 'Unit13 REP', name: 'Unit 13 REP', quantity: 50 },
+                    { id: 'Unit14 REP', name: 'Unit 14 REP', quantity: 50 },
+                    { id: 'Unit15 REP', name: 'Unit 15 REP', quantity: 50 },
+                    { id: 'Unit16 REP', name: 'Unit 16 REP', quantity: 50 },
+                    { id: 'Unit17 REP', name: 'Unit 17 REP', quantity: 50 },
+                    { id: 'Unit18 REP', name: 'Unit 18 REP', quantity: 50 },
+                    { id: 'Unit19 REP', name: 'Unit 19 REP', quantity: 50 },
+                    { id: 'Unit20 REP', name: 'Unit 20 REP', quantity: 50 },
+                    { id: 'Unit21 REP', name: 'Unit 21 REP', quantity: 50 },
+                    { id: 'Unit22 REP', name: 'Unit 22 REP', quantity: 50 },
+                    { id: 'Unit23 REP', name: 'Unit 23 REP', quantity: 50 },
+                    { id: 'Unit24 REP', name: 'Unit 24 REP', quantity: 50 },
+                    { id: 'Unit25 REP', name: 'Unit 25 REP', quantity: 50 },
+                    { id: 'Unit26 REP', name: 'Unit 26 REP', quantity: 50 },
+                    { id: 'Unit27 REP', name: 'Unit 27 REP', quantity: 50 },
+                    { id: 'Unit28 REP', name: 'Unit 28 REP', quantity: 50 },
+                    { id: 'Unit29 REP', name: 'Unit 29 REP', quantity: 50 },
+                    { id: 'Unit30 REP', name: 'Unit 30 REP', quantity: 50 },
+                    { id: 'Unit31 REP', name: 'Unit 31 REP', quantity: 50 },
+                    { id: 'Unit32 REP', name: 'Unit 32 REP', quantity: 50 },
+                    { id: 'Unit33 REP', name: 'Unit 33 REP', quantity: 50 },
+                    { id: 'Unit34 REP', name: 'Unit 34 REP', quantity: 50 },
+                    { id: 'Unit35 REP', name: 'Unit 35 REP', quantity: 50 },
+                    { id: 'Unit36 REP', name: 'Unit 36 REP', quantity: 50 },
+                    { id: 'Unit37 REP', name: 'Unit 37 REP', quantity: 50 },
+                    { id: 'Unit38 REP', name: 'Unit 38 REP', quantity: 50 },
+                    { id: 'Unit39 REP', name: 'Unit 39 REP', quantity: 50 },
+                    { id: 'Unit40 REP', name: 'Unit 40 REP', quantity: 50 },
+                  
+                ]
+            },
+            'writers': {
+                name: 'GrapeSEED Writers',
+                items: [
+                
+                    { id: 'Unit3 Writer', name: 'Unit 3 Writer', quantity: 140 },
+                    { id: 'Unit4 Writer', name: 'Unit 4 Writer', quantity: 140 },
+                    { id: 'Unit5 Writer', name: 'Unit 5 Writer', quantity: 140 },
+                    { id: 'Unit6 Writer', name: 'Unit 6 Writer', quantity: 120 },
+                    { id: 'Unit7 Writer', name: 'Unit 7 Writer', quantity: 50 },
+                    { id: 'Unit8 Writer', name: 'Unit 8 Writer', quantity: 50 },
+                    { id: 'Unit9 Writer', name: 'Unit 9 Writer', quantity: 50 },
+                    { id: 'Unit10 Writer', name: 'Unit 10 Writer', quantity: 50 },
+                    { id: 'Unit11 Writer', name: 'Unit 11 Writer', quantity: 50 },
+                    { id: 'Unit12 Writer', name: 'Unit 12 Writer', quantity: 50 },
+                    { id: 'Unit13 Writer', name: 'Unit 13 Writer', quantity: 50 },
+                    { id: 'Unit14 Writer', name: 'Unit 14 Writer', quantity: 50 },
+                    { id: 'Unit15 Writer', name: 'Unit 15 Writer', quantity: 50 },
+                    { id: 'Unit16 Writer', name: 'Unit 16 Writer', quantity: 50 },
+                    { id: 'Unit17 Writer', name: 'Unit 17 Writer', quantity: 50 },
+                    { id: 'Unit18 Writer', name: 'Unit 18 Writer', quantity: 50 },
+                    { id: 'Unit19 Writer', name: 'Unit 19 Writer', quantity: 50 },
+                    { id: 'Unit20 Writer', name: 'Unit 20 Writer', quantity: 50 },
+                    { id: 'Unit21 Writer', name: 'Unit 21 Writer', quantity: 50 },
+                    { id: 'Unit22 Writer', name: 'Unit 22 Writer', quantity: 50 },
+                    { id: 'Unit23 Writer', name: 'Unit 23 Writer', quantity: 50 },
+                    { id: 'Unit24 Writer', name: 'Unit 24 Writer', quantity: 50 },
+                    { id: 'Unit25 Writer', name: 'Unit 25 Writer', quantity: 50 },
+                    { id: 'Unit26 Writer', name: 'Unit 26 Writer', quantity: 50 },
+                    { id: 'Unit27 Writer', name: 'Unit 27 Writer', quantity: 50 },
+                    { id: 'Unit28 Writer', name: 'Unit 28 Writer', quantity: 50 },
+                    { id: 'Unit29 Writer', name: 'Unit 29 Writer', quantity: 50 },
+                    { id: 'Unit30 Writer', name: 'Unit 30 Writer', quantity: 50 },
+                    { id: 'Unit31 Writer', name: 'Unit 31 Writer', quantity: 50 },
+                    { id: 'Unit32 Writer', name: 'Unit 32 Writer', quantity: 50 },
+                    { id: 'Unit33 Writer', name: 'Unit 33 Writer', quantity: 50 },
+                    { id: 'Unit34 Writer', name: 'Unit 34 Writer', quantity: 50 },
+                    { id: 'Unit35 Writer', name: 'Unit 35 Writer', quantity: 50 },
+                    { id: 'Unit36 Writer', name: 'Unit 36 Writer', quantity: 50 },
+                    { id: 'Unit37 Writer', name: 'Unit 37 Writer', quantity: 50 },
+                    { id: 'Unit38 Writer', name: 'Unit 38 Writer', quantity: 50 },
+                    { id: 'Unit39 Writer', name: 'Unit 39 Writer', quantity: 50 },
+                    { id: 'Unit40 Writer', name: 'Unit 40 Writer', quantity: 50 },
+                ]
+            },
+            'readers': {
+                name: 'GrapeSEED Readers',
+                items: [
+                
+                    { id: 'Unit11 Reader', name: 'Unit 11 Reader', quantity: 50 },
+                    { id: 'Unit12 Reader', name: 'Unit 12 Reader', quantity: 50 },
+                    { id: 'Unit13 Reader', name: 'Unit 13 Reader', quantity: 50 },
+                    { id: 'Unit14 Reader', name: 'Unit 14 Reader', quantity: 50 },
+                    { id: 'Unit15 Reader', name: 'Unit 15 Reader', quantity: 50 },
+                    { id: 'Unit16 Reader 1', name: 'Unit 16 Reader ㅣ', quantity: 50 },
+                    { id: 'Unit16 Reader 2', name: 'Unit 16 Reader ㅣㅣ', quantity: 50 },
+                    { id: 'Unit17 Reader 1', name: 'Unit 17 Reader ㅣ', quantity: 50 },
+                    { id: 'Unit17 Reader 2', name: 'Unit 17 Reader ㅣㅣ', quantity: 50 },
+                    { id: 'Unit18 Reader 1', name: 'Unit 18 Reader ㅣ', quantity: 50 },
+                    { id: 'Unit18 Reader 2', name: 'Unit 18 Reader ㅣㅣ', quantity: 50 },
+                    { id: 'Unit19 Reader 1', name: 'Unit 19 Reader ㅣ', quantity: 50 },
+                    { id: 'Unit19 Reader 2', name: 'Unit 19 Reader ㅣㅣ', quantity: 50 },
+                    { id: 'Unit20 Reader 1', name: 'Unit 20 Reader ㅣ', quantity: 50 },
+                    { id: 'Unit20 Reader 2', name: 'Unit 20 Reader ㅣㅣ', quantity: 50 },
+                    { id: 'Unit21 Reader', name: 'Unit 21 Reader', quantity: 50 },
+                    { id: 'Unit22 Reader', name: 'Unit 22 Reader', quantity: 50 },
+                    { id: 'Unit23 Reader', name: 'Unit 23 Reader', quantity: 50 },
+                    { id: 'Unit24 Reader', name: 'Unit 24 Reader', quantity: 50 },
+                    { id: 'Unit25 Reader', name: 'Unit 25 Reader', quantity: 50 },
+                    { id: 'Unit26 Reader', name: 'Unit 26 Reader', quantity: 50 },
+                    { id: 'Unit27 Reader', name: 'Unit 27 Reader', quantity: 50 },
+                    { id: 'Unit28 Reader', name: 'Unit 28 Reader', quantity: 50 },
+                    { id: 'Unit29 Reader', name: 'Unit 29 Reader', quantity: 50 },
+                    { id: 'Unit30 Reader', name: 'Unit 30 Reader', quantity: 50 },
+                    { id: 'Unit31 Reader', name: 'Unit 31 Reader', quantity: 50 },
+                    { id: 'Unit32 Reader', name: 'Unit 32 Reader', quantity: 50 },
+                    { id: 'Unit33 Reader', name: 'Unit 33 Reader', quantity: 50 },
+                    { id: 'Unit34 Reader', name: 'Unit 34 Reader', quantity: 50 },
+                    { id: 'Unit35 Reader', name: 'Unit 35 Reader', quantity: 50 },
+                    { id: 'Unit36 Reader', name: 'Unit 36 Reader', quantity: 50 },
+                    { id: 'Unit37 Reader', name: 'Unit 37 Reader', quantity: 50 },
+                    { id: 'Unit38 Reader', name: 'Unit 38 Reader', quantity: 50 },
+                    { id: 'Unit39 Reader', name: 'Unit 39 Reader', quantity: 50 },
+                    { id: 'Unit40 Reader', name: 'Unit 40 Reader', quantity: 50 },
+                
+                ]
+            },
+            'materials': {
+                name: 'GrapeSEED Goods',
+                items: [
+                    { id: 'Goods1', name: 'Eco Bag', quantity: 10 },
+                    { id: 'Goods2', name: 'Badges', quantity: 20 },
+                    { id: 'Goods3', name: 'Spring Note', quantity: 10 },
+                    { id: 'Goods4', name: 'LineMan Notebook', quantity: 20 },
+                    { id: 'Goods5', name: 'GS Pen', quantity: 10 },
+                    { id: 'Goods6', name: 'GS Shopping Bag', quantity: 10 },
+                    { id: 'Goods7', name: 'GS 벨벳 케이스', quantity: 10 },
+                    { id: 'Goods8', name: 'GS L 홀더', quantity: 100 },
+                    { id: 'Goods9', name: 'GS LineManPencil', quantity: 12 },
+                    
+                 /*    { id: 'material2', name: 'Flashcards', quantity: 36 },
+                    { id: 'material3', name: 'Teaching Aids', quantity: 24 } */
+                ]
+            }
+        };
+
+        function updateProductList() {
+            const category = document.getElementById('categorySelect').value;
+            const productSelect = document.getElementById('productSelect');
+            productSelect.innerHTML = '<option value="">선택하세요</option>';
+            
+            if (category && products[category]) {
+                products[category].items.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    productSelect.appendChild(option);
+                });
+                productSelect.disabled = false;
+            } else {
+                productSelect.disabled = true;
+            }
+            
+            document.getElementById('boxInfo').textContent = '';
+            document.getElementById('result').style.display = 'none';
+        }
+
+        function updateBoxInfo() {
+            const category = document.getElementById('categorySelect').value;
+            const productId = document.getElementById('productSelect').value;
+            
+            if (category && productId) {
+                const product = products[category].items.find(item => item.id === productId);
+                if (product) {
+                    if (category === 'materials') {
+                        document.getElementById('boxInfo').textContent = `1패키지 당 ${product.quantity}ea`;
+                    } else {
+                        document.getElementById('boxInfo').textContent = `박스 안 수량: ${product.quantity}권`;
+                    }
+                }
+            }
+        }
+
+        function calculateBoxes() {
+            const category = document.getElementById('categorySelect').value;
+            const productId = document.getElementById('productSelect').value;
+            const totalBooks = parseInt(document.getElementById('totalBooks').value);
+            
+            if (!category || !productId) {
+                alert('품목과 상품을 선택해주세요.');
+                return;
+            }
+            
+            const product = products[category].items.find(item => item.id === productId);
+            
+            if (!product) {
+                alert('상품을 찾을 수 없습니다.');
+                return;
+            }
+            
+            if (isNaN(totalBooks) || totalBooks < 0) {
+                alert('올바른 수량을 입력해주세요.');
+                return;
+            }
+
+            const booksPerBox = product.quantity;
+            let resultText;
+
+            if (category === 'materials') { // Goods 상품인 경우
+                const totalQuantity = totalBooks * booksPerBox;
+                resultText = `
+                    <h3>총 출고 수량</h3>
+                    <p>주문한 품목: ${product.name}</p>
+                    <p>주문 수량: ${totalBooks}ea</p>
+                    <p>총 출고 수량: ${totalQuantity}ea</p>
+                `;
+            } else { // 다른 상품들의 경우
+                const fullBoxes = Math.floor(totalBooks / booksPerBox);
+                const remainingBooks = totalBooks % booksPerBox;
+                resultText = `
+                    <h3>총 출고 수량</h3>
+                    <p>주문한 품목: ${product.name}</p>
+                    <p>주문 수량: ${totalBooks}권</p>
+                    <p>발송 박스 수량: ${fullBoxes}박스</p>
+                    <p>낱권 수량: ${remainingBooks}권</p>
+                `;
+            }
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = resultText;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <img src="로고및 디자인/logo_new.png" alt="GrapeSEED Logo" class="logo">
+        <h2 class="header">GrapeSEED WareHouse Box Calculator</h2>
+        <div class="form-group">
+            <label for="categorySelect">품목 선택:</label>
+            <select id="categorySelect" onchange="updateProductList()">
+                <option value="">선택하세요</option>
+                <option value="littleseed">LS SongBook & GS REP</option>
+                <option value="writers">GrapeSEED Writers</option>
+                <option value="readers">GrapeSEED Readers</option>
+               <!--  <option value="materials">GrapeSEED CM</option> -->
+                <option value="materials">GrapeSEED Goods</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="productSelect">상품 선택:</label>
+            <select id="productSelect" onchange="updateBoxInfo()" disabled>
+                <option value="">선택하세요</option>
+            </select>
+            <div class="box-info" id="boxInfo"></div>
+        </div>
+        <div class="form-group">
+            <label for="totalBooks">주문 수량:</label>
+            <input type="number" id="totalBooks" min="1">
+        </div>
+        <div class="form-group">
+            <button onclick="calculateBoxes()">계산하기</button>
+            <p class="footer">‼️박스안 수량은 실제 수량과 다를 수 있습니다.‼️</p>
+        </div>
+        <div id="result"></div>
+    </div>
+    <!-- <div class="footer">‼️ 박스안 수량은 실제 수량과 다를 수 있습니다.</div> -->
+</body>
+
+</html>
