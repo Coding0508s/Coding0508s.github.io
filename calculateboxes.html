@@ -8,42 +8,46 @@
     <style>
         body {
             font-family: '맑은 고딕', sans-serif;
-            margin: 100px;
+            margin: 0;
             padding: 20px;
             background-color: #f5f5f5;
         }   
 
         .container {
             max-width: 600px;
+            width: 90%;
             margin: 0 auto;
             background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         .logo {
             display: block;
             margin: 0 auto;
-           
+            max-width: 100%;
+            height: auto;
         }
+
         .header {
             width: 100%;
             text-align: center;
             margin-top: 10px;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             color: #440b86;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
         }
 
         .form-group {
             margin-bottom: 15px;
-            margin-left: 100px;
-            margin-right: 100px;
+            padding: 0 20px;
         }
 
         label {
-            display: inline-block;
-            width: 100px;
-            margin-right: 10px;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
 
         select,
@@ -51,7 +55,9 @@
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            width: 200px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         button {
@@ -65,7 +71,10 @@
             font-size: 16px;
             font-weight: bold;
             text-align: center;
-            margin-left: 180px;
+            width: 100%;
+            max-width: 200px;
+            display: block;
+            margin: 0 auto;
         }
 
         button:hover {
@@ -83,27 +92,60 @@
         .box-info {
             color: #ffffff;
             background-color: #da1717;
-            width: 140px;
-            display:block;
+            width: 100%;
+            max-width: 200px;
+            display: block;
             border-radius: 4px;
             font-weight: 800;
             font-size: 15px;
             text-align: center;
-            margin: 0 auto;
-            margin-top: 10px;
+            margin: 10px auto;
+            padding: 5px;
         }
+
         .footer {
             color: #c42323;
-           /*  background-color: #c12525; */
             width: 100%;
             display: block;
-            margin-left: 100px;
             border-radius: 4px;
             font-weight: 800;
             font-size: 11px;
             text-align: center;
-            margin-left: 150px;
-           
+            margin-top: 10px;
+        }
+
+        /* 모바일 화면을 위한 미디어 쿼리 */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .form-group {
+                padding: 0 10px;
+            }
+
+            .header {
+                font-size: 1.2rem;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        /* 태블릿 화면을 위한 미디어 쿼리 */
+        @media screen and (min-width: 481px) and (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+
+            .form-group {
+                padding: 0 15px;
+            }
         }
     </style>
     <script>
@@ -351,7 +393,7 @@
 
 <body>
     <div class="container">
-        <img src="./logo_new.png" alt="GrapeSEED Logo" class="logo">
+        <img src="./로고및 디자인/logo_new.png" alt="GrapeSEED Logo" class="logo">
         <h2 class="header">GrapeSEED WareHouse Box Calculator</h2>
         <div class="form-group">
             <label for="categorySelect">품목 선택:</label>
