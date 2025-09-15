@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrapeSEED 관리자 로그인</title>
+    <style>
+        body {
+            font-family: '맑은 고딕', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #440b86, #0ca22c);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 30px;
+        }
+
+        .login-title {
+            color: #440b86;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #440b86;
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #440b86;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background-color: #0ca22c;
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .calculator-link {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .calculator-link a {
+            color: #440b86;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .calculator-link a:hover {
+            color: #0ca22c;
+        }
+
+        /* 반응형 디자인 */
+        @media screen and (max-width: 480px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            .logo {
+                max-width: 150px;
+            }
+
+            .login-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <img src="./로고및 디자인/logo_new.png" alt="GrapeSEED Logo" class="logo">
+        <h2 class="login-title">관리자 로그인</h2>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">사용자명:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">비밀번호:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="login-btn">로그인</button>
+        </form>
+        
+        <div id="errorMessage" class="error-message">
+            사용자명 또는 비밀번호가 올바르지 않습니다.
+        </div>
+        
+        <div class="calculator-link">
+            <a href="calculateboxes.html">← 박스 계산기로 돌아가기</a>
+        </div>
+    </div>
+
+    <script>
+        // 기본 관리자 계정 (실제 환경에서는 더 안전한 방법을 사용해야 함)
+        const adminCredentials = [
+            { username: 'admin', password: 'grapeseed2024!' },
+            { username: 'manager', password: 'warehouse2024@' }
+        ];
+
+        // 로그인 폼 처리
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // 자격 증명 확인
+            const isValidUser = adminCredentials.some(cred => 
+                cred.username === username && cred.password === password
+            );
+            
+            if (isValidUser) {
+                // 로그인 성공
+                sessionStorage.setItem('grapeseeed_admin_logged_in', 'true');
+                sessionStorage.setItem('grapeseeed_admin_username', username);
+                sessionStorage.setItem('grapeseeed_login_time', new Date().toISOString());
+                
+                // 관리자 페이지로 리다이렉트
+                window.location.href = 'admin.html';
+            } else {
+                // 로그인 실패
+                showError();
+                
+                // 잘못된 시도 로그
+                const attempts = parseInt(localStorage.getItem('grapeseeed_failed_attempts') || '0') + 1;
+                localStorage.setItem('grapeseeed_failed_attempts', attempts.toString());
+                
+                // 3회 실패시 5분간 잠금 (간단한 보안 조치)
+                if (attempts >= 3) {
+                    localStorage.setItem('grapeseeed_lockout_time', new Date().getTime().toString());
+                    document.getElementById('errorMessage').textContent = 
+                        '로그인 시도가 너무 많습니다. 5분 후에 다시 시도해주세요.';
+                    
+                    // 5분 후 잠금 해제
+                    setTimeout(() => {
+                        localStorage.removeItem('grapeseeed_failed_attempts');
+                        localStorage.removeItem('grapeseeed_lockout_time');
+                    }, 5 * 60 * 1000);
+                }
+            }
+        });
+
+        function showError() {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.style.display = 'block';
+            
+            // 3초 후 에러 메시지 숨기기
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // 페이지 로드시 잠금 상태 확인
+        document.addEventListener('DOMContentLoaded', function() {
+            const lockoutTime = localStorage.getItem('grapeseeed_lockout_time');
+            if (lockoutTime) {
+                const now = new Date().getTime();
+                const lockTime = parseInt(lockoutTime);
+                const fiveMinutes = 5 * 60 * 1000;
+                
+                if (now - lockTime < fiveMinutes) {
+                    const remainingTime = Math.ceil((fiveMinutes - (now - lockTime)) / 1000 / 60);
+                    document.getElementById('errorMessage').textContent = 
+                        `계정이 잠겨있습니다. ${remainingTime}분 후에 다시 시도해주세요.`;
+                    document.getElementById('errorMessage').style.display = 'block';
+                    
+                    // 로그인 폼 비활성화
+                    document.getElementById('loginForm').style.pointerEvents = 'none';
+                    document.getElementById('loginForm').style.opacity = '0.5';
+                } else {
+                    // 잠금 시간이 지났으면 초기화
+                    localStorage.removeItem('grapeseeed_failed_attempts');
+                    localStorage.removeItem('grapeseeed_lockout_time');
+                }
+            }
+
+            // 이미 로그인되어 있다면 관리자 페이지로 리다이렉트
+            if (sessionStorage.getItem('grapeseeed_admin_logged_in') === 'true') {
+                window.location.href = 'admin.html';
+            }
+        });
+
+        // Enter 키로 로그인
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+
+</html>

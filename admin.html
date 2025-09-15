@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrapeSEED 관리자 페이지</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: '맑은 고딕', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 95%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            color: #440b86;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .nav-tabs {
+            display: flex;
+            border-bottom: 2px solid #440b86;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            cursor: pointer;
+            margin-right: 5px;
+            color: #440b86;
+            font-weight: bold;
+            flex: 1;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .nav-tab.active {
+            background-color: #440b86;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #440b86;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0ca22c;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .product-table th,
+        .product-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .product-table th {
+            background-color: #440b86;
+            color: white;
+        }
+
+        .product-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: #440b86;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        /* 페이지네이션 스타일 */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 5px;
+        }
+
+        .pagination li {
+            display: inline-block;
+        }
+
+        .pagination a {
+            display: block;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #440b86;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .pagination a:hover {
+            background-color: #440b86;
+            color: white;
+        }
+
+        .pagination .active a {
+            background-color: #440b86;
+            color: white;
+        }
+
+        .pagination .disabled a {
+            color: #ccc;
+            pointer-events: none;
+        }
+
+        .items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .items-per-page select {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: auto;
+        }
+
+        .pagination-info {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 반응형 디자인 */
+        @media screen and (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .nav-tab {
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-table {
+                font-size: 12px;
+            }
+
+            .product-table th,
+            .product-table td {
+                padding: 4px;
+            }
+
+            .pagination-container {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .pagination {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .pagination a {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
+            .items-per-page {
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+
+            .search-box div {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-box div > div {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="header">GrapeSEED 창고 관리자</h1>
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showTab('dashboard')">대시보드</div>
+            <div class="nav-tab" onclick="showTab('products')">상품 관리</div>
+            <div class="nav-tab" onclick="showTab('categories')">카테고리 관리</div>
+            <div class="nav-tab" onclick="showTab('settings')">설정</div>
+        </div>
+
+        <!-- 대시보드 탭 -->
+        <div id="dashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalProducts">0</div>
+                    <div class="stat-label">총 상품 수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCategories">0</div>
+                    <div class="stat-label">카테고리 수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalItems">0</div>
+                    <div class="stat-label">총 재고량</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="lastUpdated">-</div>
+                    <div class="stat-label">마지막 업데이트</div>
+                </div>
+            </div>
+            
+            <h3>카테고리별 상품 현황</h3>
+            <div class="stats-grid" id="categoryStats">
+            </div>
+
+            <h3>최근 업데이트된 상품</h3>
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>상품명</th>
+                        <th>카테고리</th>
+                        <th>박스당 수량</th>
+                        <th>수정일</th>
+                    </tr>
+                </thead>
+                <tbody id="recentProducts">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 상품 관리 탭 -->
+        <div id="products" class="tab-content">
+            <div class="form-section">
+                <h3>새 상품 추가</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newProductCategory">카테고리:</label>
+                        <select id="newProductCategory">
+                            <option value="">선택하세요</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="newProductId">상품 ID:</label>
+                        <input type="text" id="newProductId" placeholder="예: Unit1_REP">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newProductName">상품명:</label>
+                        <input type="text" id="newProductName" placeholder="예: Unit 1 REP">
+                    </div>
+                    <div class="form-group">
+                        <label for="newProductQuantity">박스당 수량:</label>
+                        <input type="number" id="newProductQuantity" min="1" placeholder="50">
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="addProduct()">상품 추가</button>
+            </div>
+
+            <div class="search-box">
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center; margin-bottom: 15px;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <input type="text" id="productSearch" placeholder="상품 검색..." onkeyup="filterProducts()">
+                    </div>
+                    <div style="min-width: 150px;">
+                        <select id="categoryFilter" onchange="filterByCategory()" style="width: 100%;">
+                            <option value="">모든 카테고리</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="clearFilters()">필터 초기화</button>
+                </div>
+            </div>
+
+            <div class="pagination-container">
+                <div class="items-per-page">
+                    <label>페이지당 항목:</label>
+                    <select id="itemsPerPage" onchange="changeItemsPerPage()">
+                        <option value="10">10개</option>
+                        <option value="20" selected>20개</option>
+                        <option value="50">50개</option>
+                        <option value="100">100개</option>
+                    </select>
+                </div>
+                <div class="pagination-info" id="paginationInfo">
+                </div>
+            </div>
+
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>상품명</th>
+                        <th>카테고리</th>
+                        <th>박스당 수량</th>
+                        <th>관리</th>
+                    </tr>
+                </thead>
+                <tbody id="productList">
+                </tbody>
+            </table>
+
+            <div class="pagination-container">
+                <ul class="pagination" id="productPagination">
+                </ul>
+                <div></div>
+            </div>
+        </div>
+
+        <!-- 카테고리 관리 탭 -->
+        <div id="categories" class="tab-content">
+            <div class="form-section">
+                <h3>새 카테고리 추가</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newCategoryId">카테고리 ID:</label>
+                        <input type="text" id="newCategoryId" placeholder="예: newcategory">
+                    </div>
+                    <div class="form-group">
+                        <label for="newCategoryName">카테고리명:</label>
+                        <input type="text" id="newCategoryName" placeholder="예: 새로운 카테고리">
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="addCategory()">카테고리 추가</button>
+            </div>
+
+            <div class="pagination-container">
+                <div class="pagination-info" id="categoryPaginationInfo">
+                </div>
+            </div>
+
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>카테고리명</th>
+                        <th>상품 수</th>
+                        <th>관리</th>
+                    </tr>
+                </thead>
+                <tbody id="categoryList">
+                </tbody>
+            </table>
+
+            <div class="pagination-container">
+                <ul class="pagination" id="categoryPagination">
+                </ul>
+                <div></div>
+            </div>
+        </div>
+
+        <!-- 설정 탭 -->
+        <div id="settings" class="tab-content">
+            <div class="form-section">
+                <h3>데이터 백업/복원</h3>
+                <button class="btn btn-primary" onclick="exportData()">데이터 내보내기</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData()">
+                <button class="btn btn-primary" onclick="document.getElementById('importFile').click()">데이터 가져오기</button>
+                <button class="btn btn-danger" onclick="resetData()" style="margin-left: 20px;">모든 데이터 초기화</button>
+            </div>
+            
+            <div class="form-section">
+                <h3>로그</h3>
+                <textarea id="logArea" rows="10" readonly style="width: 100%; background-color: #f8f9fa;"></textarea>
+                <button class="btn btn-primary" onclick="clearLogs()">로그 지우기</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 로컬 스토리지를 사용한 데이터 관리
+        let products = JSON.parse(localStorage.getItem('grapeseeed_products')) || {
+            'littleseed': {
+                name: 'LS SongBook & GS REP',
+                items: [
+                    { id: 'songbook', name: 'LittleSEED SongBook', quantity: 50 },
+                    { id: 'Unit1 REP', name: 'Unit 1 REP', quantity: 28 },
+                    { id: 'Unit2 REP', name: 'Unit 2 REP', quantity: 34 },
+                    { id: 'Unit3 REP', name: 'Unit 3 REP', quantity: 30 },
+                    { id: 'Unit4 REP', name: 'Unit 4 REP', quantity: 50 },
+                    { id: 'Unit5 REP', name: 'Unit 5 REP', quantity: 50 },
+                    { id: 'Unit6 REP', name: 'Unit 6 REP', quantity: 32 },
+                    { id: 'Unit7 REP', name: 'Unit 7 REP', quantity: 50 },
+                    { id: 'Unit8 REP', name: 'Unit 8 REP', quantity: 50 },
+                    { id: 'Unit9 REP', name: 'Unit 9 REP', quantity: 50 },
+                    { id: 'Unit10 REP', name: 'Unit 10 REP', quantity: 50 },
+                    { id: 'Unit11 REP', name: 'Unit 11 REP', quantity: 50 },
+                    { id: 'Unit12 REP', name: 'Unit 12 REP', quantity: 50 },
+                    { id: 'Unit13 REP', name: 'Unit 13 REP', quantity: 50 },
+                    { id: 'Unit14 REP', name: 'Unit 14 REP', quantity: 50 },
+                    { id: 'Unit15 REP', name: 'Unit 15 REP', quantity: 50 },
+                    { id: 'Unit16 REP', name: 'Unit 16 REP', quantity: 50 },
+                    { id: 'Unit17 REP', name: 'Unit 17 REP', quantity: 50 },
+                    { id: 'Unit18 REP', name: 'Unit 18 REP', quantity: 50 },
+                    { id: 'Unit19 REP', name: 'Unit 19 REP', quantity: 50 },
+                    { id: 'Unit20 REP', name: 'Unit 20 REP', quantity: 50 },
+                    { id: 'Unit21 REP', name: 'Unit 21 REP', quantity: 50 },
+                    { id: 'Unit22 REP', name: 'Unit 22 REP', quantity: 50 },
+                    { id: 'Unit23 REP', name: 'Unit 23 REP', quantity: 50 },
+                    { id: 'Unit24 REP', name: 'Unit 24 REP', quantity: 50 },
+                    { id: 'Unit25 REP', name: 'Unit 25 REP', quantity: 50 },
+                    { id: 'Unit26 REP', name: 'Unit 26 REP', quantity: 50 },
+                    { id: 'Unit27 REP', name: 'Unit 27 REP', quantity: 50 },
+                    { id: 'Unit28 REP', name: 'Unit 28 REP', quantity: 50 },
+                    { id: 'Unit29 REP', name: 'Unit 29 REP', quantity: 50 },
+                    { id: 'Unit30 REP', name: 'Unit 30 REP', quantity: 50 },
+                    { id: 'Unit31 REP', name: 'Unit 31 REP', quantity: 50 },
+                    { id: 'Unit32 REP', name: 'Unit 32 REP', quantity: 50 },
+                    { id: 'Unit33 REP', name: 'Unit 33 REP', quantity: 50 },
+                    { id: 'Unit34 REP', name: 'Unit 34 REP', quantity: 50 },
+                    { id: 'Unit35 REP', name: 'Unit 35 REP', quantity: 50 },
+                    { id: 'Unit36 REP', name: 'Unit 36 REP', quantity: 50 },
+                    { id: 'Unit37 REP', name: 'Unit 37 REP', quantity: 50 },
+                    { id: 'Unit38 REP', name: 'Unit 38 REP', quantity: 50 },
+                    { id: 'Unit39 REP', name: 'Unit 39 REP', quantity: 50 },
+                    { id: 'Unit40 REP', name: 'Unit 40 REP', quantity: 50 }
+                ]
+            },
+            'writers': {
+                name: 'GrapeSEED Writers',
+                items: [
+                    { id: 'Unit3 Writer', name: 'Unit 3 Writer', quantity: 140 },
+                    { id: 'Unit4 Writer', name: 'Unit 4 Writer', quantity: 140 },
+                    { id: 'Unit5 Writer', name: 'Unit 5 Writer', quantity: 140 },
+                    { id: 'Unit6 Writer', name: 'Unit 6 Writer', quantity: 120 },
+                    { id: 'Unit7 Writer', name: 'Unit 7 Writer', quantity: 50 },
+                    { id: 'Unit8 Writer', name: 'Unit 8 Writer', quantity: 50 },
+                    { id: 'Unit9 Writer', name: 'Unit 9 Writer', quantity: 50 },
+                    { id: 'Unit10 Writer', name: 'Unit 10 Writer', quantity: 50 },
+                    { id: 'Unit11 Writer', name: 'Unit 11 Writer', quantity: 50 },
+                    { id: 'Unit12 Writer', name: 'Unit 12 Writer', quantity: 50 },
+                    { id: 'Unit13 Writer', name: 'Unit 13 Writer', quantity: 50 },
+                    { id: 'Unit14 Writer', name: 'Unit 14 Writer', quantity: 50 },
+                    { id: 'Unit15 Writer', name: 'Unit 15 Writer', quantity: 50 },
+                    { id: 'Unit16 Writer', name: 'Unit 16 Writer', quantity: 50 },
+                    { id: 'Unit17 Writer', name: 'Unit 17 Writer', quantity: 50 },
+                    { id: 'Unit18 Writer', name: 'Unit 18 Writer', quantity: 50 },
+                    { id: 'Unit19 Writer', name: 'Unit 19 Writer', quantity: 50 },
+                    { id: 'Unit20 Writer', name: 'Unit 20 Writer', quantity: 50 },
+                    { id: 'Unit21 Writer', name: 'Unit 21 Writer', quantity: 50 },
+                    { id: 'Unit22 Writer', name: 'Unit 22 Writer', quantity: 50 },
+                    { id: 'Unit23 Writer', name: 'Unit 23 Writer', quantity: 50 },
+                    { id: 'Unit24 Writer', name: 'Unit 24 Writer', quantity: 50 },
+                    { id: 'Unit25 Writer', name: 'Unit 25 Writer', quantity: 50 },
+                    { id: 'Unit26 Writer', name: 'Unit 26 Writer', quantity: 50 },
+                    { id: 'Unit27 Writer', name: 'Unit 27 Writer', quantity: 50 },
+                    { id: 'Unit28 Writer', name: 'Unit 28 Writer', quantity: 50 },
+                    { id: 'Unit29 Writer', name: 'Unit 29 Writer', quantity: 50 },
+                    { id: 'Unit30 Writer', name: 'Unit 30 Writer', quantity: 50 },
+                    { id: 'Unit31 Writer', name: 'Unit 31 Writer', quantity: 50 },
+                    { id: 'Unit32 Writer', name: 'Unit 32 Writer', quantity: 50 },
+                    { id: 'Unit33 Writer', name: 'Unit 33 Writer', quantity: 50 },
+                    { id: 'Unit34 Writer', name: 'Unit 34 Writer', quantity: 50 },
+                    { id: 'Unit35 Writer', name: 'Unit 35 Writer', quantity: 50 },
+                    { id: 'Unit36 Writer', name: 'Unit 36 Writer', quantity: 50 },
+                    { id: 'Unit37 Writer', name: 'Unit 37 Writer', quantity: 50 },
+                    { id: 'Unit38 Writer', name: 'Unit 38 Writer', quantity: 50 },
+                    { id: 'Unit39 Writer', name: 'Unit 39 Writer', quantity: 50 },
+                    { id: 'Unit40 Writer', name: 'Unit 40 Writer', quantity: 50 }
+                ]
+            },
+            'readers': {
+                name: 'GrapeSEED Readers',
+                items: [
+                    { id: 'Unit11 Reader', name: 'Unit 11 Reader', quantity: 50 },
+                    { id: 'Unit12 Reader', name: 'Unit 12 Reader', quantity: 50 },
+                    { id: 'Unit13 Reader', name: 'Unit 13 Reader', quantity: 50 },
+                    { id: 'Unit14 Reader', name: 'Unit 14 Reader', quantity: 50 },
+                    { id: 'Unit15 Reader', name: 'Unit 15 Reader', quantity: 50 },
+                    { id: 'Unit16 Reader 1', name: 'Unit 16 Reader ㅣ', quantity: 50 },
+                    { id: 'Unit16 Reader 2', name: 'Unit 16 Reader ㅣㅣ', quantity: 50 },
+                    { id: 'Unit17 Reader 1', name: 'Unit 17 Reader ㅣ', quantity: 50 },
+                    { id: 'Unit17 Reader 2', name: 'Unit 17 Reader ㅣㅣ', quantity: 50 },
+                    { id: 'Unit18 Reader 1', name: 'Unit 18 Reader ㅣ', quantity: 50 },
+                    { id: 'Unit18 Reader 2', name: 'Unit 18 Reader ㅣㅣ', quantity: 50 },
+                    { id: 'Unit19 Reader 1', name: 'Unit 19 Reader ㅣ', quantity: 50 },
+                    { id: 'Unit19 Reader 2', name: 'Unit 19 Reader ㅣㅣ', quantity: 50 },
+                    { id: 'Unit20 Reader 1', name: 'Unit 20 Reader ㅣ', quantity: 50 },
+                    { id: 'Unit20 Reader 2', name: 'Unit 20 Reader ㅣㅣ', quantity: 50 },
+                    { id: 'Unit21 Reader', name: 'Unit 21 Reader', quantity: 50 },
+                    { id: 'Unit22 Reader', name: 'Unit 22 Reader', quantity: 50 },
+                    { id: 'Unit23 Reader', name: 'Unit 23 Reader', quantity: 50 },
+                    { id: 'Unit24 Reader', name: 'Unit 24 Reader', quantity: 50 },
+                    { id: 'Unit25 Reader', name: 'Unit 25 Reader', quantity: 50 },
+                    { id: 'Unit26 Reader', name: 'Unit 26 Reader', quantity: 50 },
+                    { id: 'Unit27 Reader', name: 'Unit 27 Reader', quantity: 50 },
+                    { id: 'Unit28 Reader', name: 'Unit 28 Reader', quantity: 50 },
+                    { id: 'Unit29 Reader', name: 'Unit 29 Reader', quantity: 50 },
+                    { id: 'Unit30 Reader', name: 'Unit 30 Reader', quantity: 50 },
+                    { id: 'Unit31 Reader', name: 'Unit 31 Reader', quantity: 50 },
+                    { id: 'Unit32 Reader', name: 'Unit 32 Reader', quantity: 50 },
+                    { id: 'Unit33 Reader', name: 'Unit 33 Reader', quantity: 50 },
+                    { id: 'Unit34 Reader', name: 'Unit 34 Reader', quantity: 50 },
+                    { id: 'Unit35 Reader', name: 'Unit 35 Reader', quantity: 50 },
+                    { id: 'Unit36 Reader', name: 'Unit 36 Reader', quantity: 50 },
+                    { id: 'Unit37 Reader', name: 'Unit 37 Reader', quantity: 50 },
+                    { id: 'Unit38 Reader', name: 'Unit 38 Reader', quantity: 50 },
+                    { id: 'Unit39 Reader', name: 'Unit 39 Reader', quantity: 50 },
+                    { id: 'Unit40 Reader', name: 'Unit 40 Reader', quantity: 50 }
+                ]
+            },
+            'materials': {
+                name: 'GrapeSEED Goods',
+                items: [
+                    { id: 'Goods1', name: 'Eco Bag', quantity: 10 },
+                    { id: 'Goods2', name: 'Badges', quantity: 20 },
+                    { id: 'Goods3', name: 'Spring Note', quantity: 10 },
+                    { id: 'Goods4', name: 'LineMan Notebook', quantity: 20 },
+                    { id: 'Goods5', name: 'GS Pen', quantity: 10 },
+                    { id: 'Goods6', name: 'GS Shopping Bag', quantity: 10 },
+                    { id: 'Goods7', name: 'GS 벨벳 케이스', quantity: 10 },
+                    { id: 'Goods8', name: 'GS L 홀더', quantity: 100 },
+                    { id: 'Goods9', name: 'GS LineManPencil', quantity: 12 },
+                    { id: 'Goods10', name: 'GS Calendar Stickers Big', quantity: 1 },
+                    { id: 'Goods11', name: 'GS Calendar Stickers Small', quantity: 1 }
+                ]
+            }
+        };
+
+        // 페이지네이션 변수들
+        let currentProductPage = 1;
+        let currentCategoryPage = 1;
+        let itemsPerPage = 20;
+        let filteredProducts = [];
+        let selectedCategory = ''; // 선택된 카테고리 필터
+
+        // 페이지네이션 유틸리티 함수들
+        function createPagination(totalItems, currentPage, containerId, onPageClick) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // 이전 버튼
+            const prevLi = document.createElement('li');
+            prevLi.className = currentPage === 1 ? 'disabled' : '';
+            prevLi.innerHTML = `<a href="#" onclick="${onPageClick}(${currentPage - 1}); return false;">이전</a>`;
+            container.appendChild(prevLi);
+
+            // 페이지 번호들
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+
+            if (startPage > 1) {
+                const firstLi = document.createElement('li');
+                firstLi.innerHTML = `<a href="#" onclick="${onPageClick}(1); return false;">1</a>`;
+                container.appendChild(firstLi);
+
+                if (startPage > 2) {
+                    const dotsLi = document.createElement('li');
+                    dotsLi.className = 'disabled';
+                    dotsLi.innerHTML = '<a href="#">...</a>';
+                    container.appendChild(dotsLi);
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const li = document.createElement('li');
+                li.className = i === currentPage ? 'active' : '';
+                li.innerHTML = `<a href="#" onclick="${onPageClick}(${i}); return false;">${i}</a>`;
+                container.appendChild(li);
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const dotsLi = document.createElement('li');
+                    dotsLi.className = 'disabled';
+                    dotsLi.innerHTML = '<a href="#">...</a>';
+                    container.appendChild(dotsLi);
+                }
+
+                const lastLi = document.createElement('li');
+                lastLi.innerHTML = `<a href="#" onclick="${onPageClick}(${totalPages}); return false;">${totalPages}</a>`;
+                container.appendChild(lastLi);
+            }
+
+            // 다음 버튼
+            const nextLi = document.createElement('li');
+            nextLi.className = currentPage === totalPages ? 'disabled' : '';
+            nextLi.innerHTML = `<a href="#" onclick="${onPageClick}(${currentPage + 1}); return false;">다음</a>`;
+            container.appendChild(nextLi);
+        }
+
+        function updatePaginationInfo(totalItems, currentPage, infoId) {
+            const startItem = (currentPage - 1) * itemsPerPage + 1;
+            const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+            const infoElement = document.getElementById(infoId);
+            
+            if (totalItems === 0) {
+                infoElement.textContent = '항목이 없습니다.';
+            } else {
+                infoElement.textContent = `총 ${totalItems}개 중 ${startItem}-${endItem}개 표시`;
+            }
+        }
+
+        function changeItemsPerPage() {
+            itemsPerPage = parseInt(document.getElementById('itemsPerPage').value);
+            currentProductPage = 1;
+            updateProductList();
+        }
+
+        function goToProductPage(page) {
+            currentProductPage = page;
+            updateProductList();
+        }
+
+        function goToCategoryPage(page) {
+            currentCategoryPage = page;
+            updateCategoryList();
+        }
+
+        // 로그 시스템
+        function log(message) {
+            const timestamp = new Date().toLocaleString('ko-KR');
+            const logMessage = `[${timestamp}] ${message}`;
+            const logs = JSON.parse(localStorage.getItem('grapeseeed_logs') || '[]');
+            logs.push(logMessage);
+            
+            // 최대 100개 로그만 유지
+            if (logs.length > 100) {
+                logs.shift();
+            }
+            
+            localStorage.setItem('grapeseeed_logs', JSON.stringify(logs));
+            updateLogArea();
+        }
+
+        function updateLogArea() {
+            const logs = JSON.parse(localStorage.getItem('grapeseeed_logs') || '[]');
+            document.getElementById('logArea').value = logs.join('\n');
+        }
+
+        function clearLogs() {
+            localStorage.removeItem('grapeseeed_logs');
+            document.getElementById('logArea').value = '';
+            showAlert('로그가 삭제되었습니다.', 'success');
+        }
+
+        // 알림 표시
+        function showAlert(message, type = 'success') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            const container = document.querySelector('.container');
+            container.insertBefore(alertDiv, container.firstChild);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        // 데이터 저장
+        function saveData() {
+            localStorage.setItem('grapeseeed_products', JSON.stringify(products));
+            localStorage.setItem('grapeseeed_last_updated', new Date().toISOString());
+        }
+
+        // 탭 전환
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            
+            // 클릭된 탭 버튼을 활성화 (event.target이 없을 수도 있으므로 찾아서 처리)
+            const tabButtons = document.querySelectorAll('.nav-tab');
+            tabButtons.forEach((button, index) => {
+                if ((tabName === 'dashboard' && index === 0) ||
+                    (tabName === 'products' && index === 1) ||
+                    (tabName === 'categories' && index === 2) ||
+                    (tabName === 'settings' && index === 3)) {
+                    button.classList.add('active');
+                }
+            });
+            
+            if (tabName === 'dashboard') updateDashboard();
+            if (tabName === 'products') updateProductList();
+            if (tabName === 'categories') updateCategoryList();
+            if (tabName === 'settings') updateLogArea();
+        }
+
+        // 대시보드 업데이트
+        function updateDashboard() {
+            let totalProducts = 0;
+            let totalItems = 0;
+            
+            Object.values(products).forEach(category => {
+                totalProducts += category.items.length;
+                totalItems += category.items.reduce((sum, item) => sum + item.quantity, 0);
+            });
+            
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('totalCategories').textContent = Object.keys(products).length;
+            document.getElementById('totalItems').textContent = totalItems;
+            
+            const lastUpdated = localStorage.getItem('grapeseeed_last_updated');
+            if (lastUpdated) {
+                const date = new Date(lastUpdated);
+                document.getElementById('lastUpdated').textContent = date.toLocaleDateString('ko-KR');
+            }
+            
+            updateCategoryStats();
+            updateRecentProducts();
+        }
+
+        function updateCategoryStats() {
+            const categoryStatsContainer = document.getElementById('categoryStats');
+            categoryStatsContainer.innerHTML = '';
+            
+            Object.entries(products).forEach(([categoryId, category]) => {
+                const itemCount = category.items.length;
+                const totalQuantity = category.items.reduce((sum, item) => sum + item.quantity, 0);
+                
+                const statCard = document.createElement('div');
+                statCard.className = 'stat-card';
+                statCard.style.cursor = 'pointer';
+                statCard.onclick = () => {
+                    // 상품 관리 탭으로 이동하고 해당 카테고리 필터 적용
+                    showTab('products');
+                    document.getElementById('categoryFilter').value = categoryId;
+                    selectedCategory = categoryId;
+                    currentProductPage = 1;
+                    updateProductList();
+                };
+                
+                statCard.innerHTML = `
+                    <div class="stat-number">${itemCount}</div>
+                    <div class="stat-label">${category.name}</div>
+                    <div style="font-size: 0.8rem; opacity: 0.8;">총 ${totalQuantity}개 재고</div>
+                `;
+                
+                categoryStatsContainer.appendChild(statCard);
+            });
+        }
+
+        function updateRecentProducts() {
+            const tbody = document.getElementById('recentProducts');
+            tbody.innerHTML = '';
+            
+            let allProducts = [];
+            Object.entries(products).forEach(([categoryId, category]) => {
+                category.items.forEach(item => {
+                    allProducts.push({
+                        ...item,
+                        categoryId,
+                        categoryName: category.name
+                    });
+                });
+            });
+            
+            // 최근 5개만 표시
+            allProducts.slice(0, 5).forEach(product => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.categoryName}</td>
+                    <td>${product.quantity}</td>
+                    <td>${new Date().toLocaleDateString('ko-KR')}</td>
+                `;
+            });
+        }
+
+        // 상품 관리
+        function updateProductList() {
+            // 모든 상품 목록 생성
+            let allProducts = [];
+            Object.entries(products).forEach(([categoryId, category]) => {
+                category.items.forEach(item => {
+                    allProducts.push({
+                        ...item,
+                        categoryId,
+                        categoryName: category.name
+                    });
+                });
+            });
+
+            // 카테고리 필터 적용
+            if (selectedCategory) {
+                allProducts = allProducts.filter(product => product.categoryId === selectedCategory);
+            }
+
+            // 검색 필터 적용
+            const searchTerm = document.getElementById('productSearch').value.toLowerCase();
+            if (searchTerm) {
+                filteredProducts = allProducts.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.id.toLowerCase().includes(searchTerm) ||
+                    product.categoryName.toLowerCase().includes(searchTerm)
+                );
+            } else {
+                filteredProducts = allProducts;
+            }
+
+            // 페이지네이션 계산
+            const totalItems = filteredProducts.length;
+            const startIndex = (currentProductPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageItems = filteredProducts.slice(startIndex, endIndex);
+
+            // 테이블 업데이트
+            const tbody = document.getElementById('productList');
+            tbody.innerHTML = '';
+            
+            pageItems.forEach(product => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>${product.name}</td>
+                    <td>${product.categoryName}</td>
+                    <td>
+                        <input type="number" value="${product.quantity}" 
+                               onchange="updateProductQuantity('${product.categoryId}', '${product.id}', this.value)"
+                               style="width: 80px;">
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteProduct('${product.categoryId}', '${product.id}')">삭제</button>
+                    </td>
+                `;
+            });
+
+            // 페이지네이션 UI 업데이트
+            updatePaginationInfo(totalItems, currentProductPage, 'paginationInfo');
+            createPagination(totalItems, currentProductPage, 'productPagination', 'goToProductPage');
+            
+            updateCategoryDropdown();
+            updateCategoryFilter();
+        }
+
+        function updateCategoryDropdown() {
+            const select = document.getElementById('newProductCategory');
+            select.innerHTML = '<option value="">선택하세요</option>';
+            
+            Object.entries(products).forEach(([categoryId, category]) => {
+                const option = document.createElement('option');
+                option.value = categoryId;
+                option.textContent = category.name;
+                select.appendChild(option);
+            });
+        }
+
+        function updateCategoryFilter() {
+            const filterSelect = document.getElementById('categoryFilter');
+            const currentValue = filterSelect.value; // 현재 선택값 저장
+            
+            filterSelect.innerHTML = '<option value="">모든 카테고리</option>';
+            
+            Object.entries(products).forEach(([categoryId, category]) => {
+                const option = document.createElement('option');
+                option.value = categoryId;
+                option.textContent = category.name;
+                if (categoryId === currentValue) {
+                    option.selected = true;
+                }
+                filterSelect.appendChild(option);
+            });
+        }
+
+        function filterByCategory() {
+            selectedCategory = document.getElementById('categoryFilter').value;
+            currentProductPage = 1; // 필터 변경시 첫 페이지로 이동
+            updateProductList();
+        }
+
+        function clearFilters() {
+            document.getElementById('productSearch').value = '';
+            document.getElementById('categoryFilter').value = '';
+            selectedCategory = '';
+            currentProductPage = 1;
+            updateProductList();
+        }
+
+        function addProduct() {
+            const categoryId = document.getElementById('newProductCategory').value;
+            const productId = document.getElementById('newProductId').value.trim();
+            const productName = document.getElementById('newProductName').value.trim();
+            const quantity = parseInt(document.getElementById('newProductQuantity').value);
+            
+            if (!categoryId || !productId || !productName || !quantity) {
+                showAlert('모든 필드를 입력해주세요.', 'danger');
+                return;
+            }
+            
+            // 중복 ID 체크
+            const existingProduct = products[categoryId].items.find(item => item.id === productId);
+            if (existingProduct) {
+                showAlert('이미 존재하는 상품 ID입니다.', 'danger');
+                return;
+            }
+            
+            products[categoryId].items.push({
+                id: productId,
+                name: productName,
+                quantity: quantity
+            });
+            
+            saveData();
+            log(`상품 추가: ${productName} (${categoryId})`);
+            showAlert('상품이 추가되었습니다.', 'success');
+            
+            // 폼 초기화
+            document.getElementById('newProductId').value = '';
+            document.getElementById('newProductName').value = '';
+            document.getElementById('newProductQuantity').value = '';
+            
+            // 새 상품이 추가되어 현재 페이지에서 벗어날 수 있으므로 적절한 페이지로 이동
+            const totalItems = Object.values(products).reduce((sum, cat) => sum + cat.items.length, 0);
+            const maxPage = Math.ceil(totalItems / itemsPerPage);
+            if (currentProductPage > maxPage) {
+                currentProductPage = maxPage;
+            }
+            
+            updateProductList();
+        }
+
+        function updateProductQuantity(categoryId, productId, newQuantity) {
+            const quantity = parseInt(newQuantity);
+            if (isNaN(quantity) || quantity < 0) {
+                showAlert('올바른 수량을 입력해주세요.', 'danger');
+                return;
+            }
+            
+            const product = products[categoryId].items.find(item => item.id === productId);
+            if (product) {
+                const oldQuantity = product.quantity;
+                product.quantity = quantity;
+                saveData();
+                log(`수량 변경: ${product.name} (${oldQuantity} → ${quantity})`);
+                showAlert('수량이 업데이트되었습니다.', 'success');
+            }
+        }
+
+        function deleteProduct(categoryId, productId) {
+            if (!confirm('정말로 이 상품을 삭제하시겠습니까?')) {
+                return;
+            }
+            
+            const productIndex = products[categoryId].items.findIndex(item => item.id === productId);
+            if (productIndex !== -1) {
+                const deletedProduct = products[categoryId].items.splice(productIndex, 1)[0];
+            saveData();
+            log(`상품 삭제: ${deletedProduct.name}`);
+            showAlert('상품이 삭제되었습니다.', 'success');
+            
+            // 삭제 후 현재 페이지가 비어있으면 이전 페이지로 이동
+            const totalItems = Object.values(products).reduce((sum, cat) => sum + cat.items.length, 0);
+            const maxPage = Math.ceil(totalItems / itemsPerPage) || 1;
+            if (currentProductPage > maxPage) {
+                currentProductPage = maxPage;
+            }
+            
+            updateProductList();
+            }
+        }
+
+        function filterProducts() {
+            currentProductPage = 1; // 검색시 첫 페이지로 이동
+            updateProductList();
+        }
+
+        // 카테고리 관리
+        function updateCategoryList() {
+            // 모든 카테고리 목록 생성
+            const allCategories = Object.entries(products).map(([categoryId, category]) => ({
+                id: categoryId,
+                name: category.name,
+                itemCount: category.items.length
+            }));
+
+            // 페이지네이션 계산
+            const totalItems = allCategories.length;
+            const startIndex = (currentCategoryPage - 1) * 10; // 카테고리는 페이지당 10개로 고정
+            const endIndex = startIndex + 10;
+            const pageItems = allCategories.slice(startIndex, endIndex);
+
+            // 테이블 업데이트
+            const tbody = document.getElementById('categoryList');
+            tbody.innerHTML = '';
+            
+            pageItems.forEach(category => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${category.id}</td>
+                    <td>${category.name}</td>
+                    <td>${category.itemCount}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteCategory('${category.id}')">삭제</button>
+                    </td>
+                `;
+            });
+
+            // 페이지네이션 UI 업데이트
+            updatePaginationInfo(totalItems, currentCategoryPage, 'categoryPaginationInfo');
+            
+            // 카테고리는 항목이 적으므로 간단한 페이지네이션 사용
+            const totalPages = Math.ceil(totalItems / 10);
+            const container = document.getElementById('categoryPagination');
+            container.innerHTML = '';
+
+            if (totalPages > 1) {
+                for (let i = 1; i <= totalPages; i++) {
+                    const li = document.createElement('li');
+                    li.className = i === currentCategoryPage ? 'active' : '';
+                    li.innerHTML = `<a href="#" onclick="goToCategoryPage(${i}); return false;">${i}</a>`;
+                    container.appendChild(li);
+                }
+            }
+        }
+
+        function addCategory() {
+            const categoryId = document.getElementById('newCategoryId').value.trim();
+            const categoryName = document.getElementById('newCategoryName').value.trim();
+            
+            if (!categoryId || !categoryName) {
+                showAlert('모든 필드를 입력해주세요.', 'danger');
+                return;
+            }
+            
+            if (products[categoryId]) {
+                showAlert('이미 존재하는 카테고리 ID입니다.', 'danger');
+                return;
+            }
+            
+            products[categoryId] = {
+                name: categoryName,
+                items: []
+            };
+            
+            saveData();
+            log(`카테고리 추가: ${categoryName} (${categoryId})`);
+            showAlert('카테고리가 추가되었습니다.', 'success');
+            
+            // 폼 초기화
+            document.getElementById('newCategoryId').value = '';
+            document.getElementById('newCategoryName').value = '';
+            
+            updateCategoryList();
+        }
+
+        function deleteCategory(categoryId) {
+            const category = products[categoryId];
+            if (category.items.length > 0) {
+                if (!confirm(`이 카테고리에는 ${category.items.length}개의 상품이 있습니다. 정말로 삭제하시겠습니까?`)) {
+                    return;
+                }
+            }
+            
+            delete products[categoryId];
+            saveData();
+            log(`카테고리 삭제: ${category.name}`);
+            showAlert('카테고리가 삭제되었습니다.', 'success');
+            updateCategoryList();
+        }
+
+        // 데이터 백업/복원
+        function exportData() {
+            const data = {
+                products: products,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `grapeseeed_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            log('데이터 내보내기 완료');
+            showAlert('데이터가 내보내졌습니다.', 'success');
+        }
+
+        function importData() {
+            const file = document.getElementById('importFile').files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.products) {
+                        products = data.products;
+                        saveData();
+                        log('데이터 가져오기 완료');
+                        showAlert('데이터가 성공적으로 가져와졌습니다.', 'success');
+                        updateDashboard();
+                        updateProductList();
+                        updateCategoryList();
+                    } else {
+                        showAlert('올바르지 않은 파일 형식입니다.', 'danger');
+                    }
+                } catch (error) {
+                    showAlert('파일을 읽는 중 오류가 발생했습니다.', 'danger');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetData() {
+            if (!confirm('정말로 모든 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                return;
+            }
+            
+            localStorage.removeItem('grapeseeed_products');
+            localStorage.removeItem('grapeseeed_logs');
+            localStorage.removeItem('grapeseeed_last_updated');
+            
+            location.reload();
+        }
+
+        // 로그인 확인
+        function checkAuthentication() {
+            const isLoggedIn = sessionStorage.getItem('grapeseeed_admin_logged_in');
+            const username = sessionStorage.getItem('grapeseeed_admin_username');
+            
+            if (!isLoggedIn || isLoggedIn !== 'true') {
+                window.location.href = 'login.html';
+                return false;
+            }
+            
+            // 로그인 정보 표시
+            const header = document.querySelector('.header');
+            header.innerHTML += `<div style="font-size: 0.8rem; color: #666; margin-top: 5px;">${username}님으로 로그인됨</div>`;
+            
+            return true;
+        }
+
+        // 로그아웃 기능
+        function logout() {
+            if (confirm('로그아웃하시겠습니까?')) {
+                sessionStorage.removeItem('grapeseeed_admin_logged_in');
+                sessionStorage.removeItem('grapeseeed_admin_username');
+                sessionStorage.removeItem('grapeseeed_login_time');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAuthentication()) {
+                return;
+            }
+            
+            updateDashboard();
+            updateProductList();
+            updateCategoryList();
+            updateLogArea();
+            log('관리자 페이지 접속');
+            
+            // 로그아웃 버튼 추가
+            const header = document.querySelector('.header');
+            const logoutBtn = document.createElement('button');
+            logoutBtn.textContent = '로그아웃';
+            logoutBtn.className = 'btn btn-danger';
+            logoutBtn.style.cssText = 'position: absolute; top: 20px; right: 20px; padding: 5px 10px; font-size: 12px;';
+            logoutBtn.onclick = logout;
+            header.parentElement.style.position = 'relative';
+            header.parentElement.appendChild(logoutBtn);
+        });
+    </script>
+</body>
+
+</html>

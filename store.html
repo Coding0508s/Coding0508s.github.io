@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GrapeSEED Store 오픈 안내</title>
+    <script>
+        const products = {
+            'book1': { name: 'Level 1 교재', quantity: 32 },
+            'book2': { name: 'Level 2 교재', quantity: 40 },
+            'book3': { name: 'Level 3 교재', quantity: 24 },
+            'book4': { name: 'Activity Book', quantity: 48 },
+            'book5': { name: 'Phonics Book', quantity: 36 }
+        };
+
+        function updateBoxInfo() {
+            const selectedProduct = document.getElementById('productType').value;
+            const booksPerBox = products[selectedProduct].quantity;
+            document.getElementById('boxInfo').textContent = `1박스 당 ${booksPerBox}개`;
+        }
+
+        function calculateBoxes() {
+            const totalBooks = parseInt(document.getElementById('totalBooks').value);
+            const selectedProduct = document.getElementById('productType').value;
+            const booksPerBox = products[selectedProduct].quantity;
+            
+            if (isNaN(totalBooks) || totalBooks < 0) {
+                alert('올바른 수량을 입력해주세요.');
+                return;
+            }
+
+            const fullBoxes = Math.floor(totalBooks / booksPerBox);
+            const remainingBooks = totalBooks % booksPerBox;
+
+            document.getElementById('result').innerHTML = 
+                `<div style="background-color: #fff; padding: 15px; border-radius: 5px;">
+                    <p style="margin: 0 0 10px 0;">선택한 상품: ${products[selectedProduct].name}</p>
+                    <p style="margin: 0 0 10px 0;">필요한 박스 수: ${fullBoxes}박스</p>
+                    <p style="margin: 0;">남은 수량: ${remainingBooks}개</p>
+                </div>`;
+        }
+    </script>
+</head>
+
+<body style="font-family: '맑은 고딕', sans-serif; font-size: 16px; color: #000; line-height: 1.6; margin: 0; padding: 15px; word-break: keep-all; word-wrap: break-word;">
+    <div class="content" style="max-width: 100%; margin: 0 auto; padding: 0 15px;">
+        <div style="font-size: 20px; font-weight: bold; margin: 0px 20px; text-align: center;">
+            GrapeSEED Store 오픈
+        </div>
+        <div class="content">안내</div>
+        
+        <div style="margin: 30px 0; padding: 20px; background-color: #f5f5f5; border-radius: 10px;">
+            <h3 style="margin: 0 0 15px 0;">박스 계산기</h3>
+            <div style="margin-bottom: 15px;">
+                <div style="margin-bottom: 10px;">
+                    <label for="productType">상품 선택:</label>
+                    <select id="productType" onchange="updateBoxInfo()" style="padding: 5px; margin: 0 5px; min-width: 150px;">
+                        <option value="book1">Level 1 교재</option>
+                        <option value="book2">Level 2 교재</option>
+                        <option value="book3">Level 3 교재</option>
+                        <option value="book4">Activity Book</option>
+                        <option value="book5">Phonics Book</option>
+                    </select>
+                    <span id="boxInfo" style="margin-left: 10px; color: #666;">1박스 당 32개</span>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label for="totalBooks">주문 수량:</label>
+                    <input type="number" id="totalBooks" style="padding: 5px; margin: 0 5px;" min="1">
+                    <button onclick="calculateBoxes()" style="padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">계산하기</button>
+                </div>
+            </div>
+            <div id="result" style="margin-top: 15px;"></div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <p style="margin: 0 0 20px 0;">GrapeSEED 굿즈 상품을 구매할 수 있는 GrapeSEED Store를 오픈하였습니다.</p>
+            
+            <p style="margin: 0 0 20px 0;">해당 사이트에서는 교실을 창의적이고 활기차게 꾸밀 수 있는 데코레이션 상품과
+            REP 동기부여을 위한 다양한 아이템, 그리고 일본 메이센 아카데미 견학 프로그램 등도 손쉽게 신청하실 수 있습니다.</p>
+            
+            <p style="margin: 0 0 20px 0;">특히 이전에는 이미지 파일이 없어 상품 이해가 어려웠던 점을 
+            개선하여, 이제는 직접 상품 이미지를 확인하며 구매할 수 있도록 편의성을 크게 높였습니다.</p>
+            
+            <p style="margin: 0 0 20px 0;">로그인용 ID 및 비밀번호는 기관장님께 별도 제공해 드렸으니 확인 부탁드리며,
+            추가 문의 사항은 담당 컨설턴트에게 연락 주시기 바랍니다.</p>
+            
+            <p style="margin: 0 0 20px 0;">감사합니다.</p>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            그레이프시드코리아㈜
+        </div>
+    </div>
+</body>
+
+</html>
