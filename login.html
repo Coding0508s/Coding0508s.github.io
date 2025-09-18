@@ -113,6 +113,58 @@
             color: #0ca22c;
         }
 
+        /* Wave 애니메이션 스타일 */
+        .wave-text {
+            display: inline-block;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #440b86;
+        }
+
+        .wave-text span {
+            display: inline-block;
+            animation: wave 2s ease-in-out infinite;
+            animation-fill-mode: both;
+        }
+
+        /* 첫 번째 줄 애니메이션 지연시간 */
+        .wave-line:nth-child(1) span:nth-child(1) { animation-delay: 0.1s; }
+        .wave-line:nth-child(1) span:nth-child(2) { animation-delay: 0.2s; }
+        .wave-line:nth-child(1) span:nth-child(3) { animation-delay: 0.3s; }
+        .wave-line:nth-child(1) span:nth-child(4) { animation-delay: 0.4s; }
+        .wave-line:nth-child(1) span:nth-child(5) { animation-delay: 0.5s; }
+
+        /* 두 번째 줄 애니메이션 지연시간 */
+        .wave-line:nth-child(2) span:nth-child(1) { animation-delay: 0.7s; }
+        .wave-line:nth-child(2) span:nth-child(2) { animation-delay: 0.8s; }
+        .wave-line:nth-child(2) span:nth-child(3) { animation-delay: 0.9s; }
+        .wave-line:nth-child(2) span:nth-child(4) { animation-delay: 1.0s; }
+        .wave-line:nth-child(2) span:nth-child(5) { animation-delay: 1.1s; }
+        .wave-line:nth-child(2) span:nth-child(6) { animation-delay: 1.2s; }
+        .wave-line:nth-child(2) span:nth-child(7) { animation-delay: 1.3s; }
+        .wave-line:nth-child(2) span:nth-child(8) { animation-delay: 1.4s; }
+        .wave-line:nth-child(2) span:nth-child(9) { animation-delay: 1.5s; }
+
+        @keyframes wave {
+            0%, 40%, 100% {
+                transform: translateY(0);
+                color: #440b86;
+            }
+            20% {
+                transform: translateY(-15px);
+                color: #0ca22c;
+                text-shadow: 0 0 10px rgba(12, 162, 44, 0.5);
+            }
+        }
+
+        /* 줄바꿈 스타일 */
+        .wave-line {
+            display: block;
+            margin: 5px 0;
+        }
+
         /* 반응형 디자인 */
         @media screen and (max-width: 480px) {
             .login-container {
@@ -127,6 +179,22 @@
             .login-title {
                 font-size: 1.3rem;
             }
+
+            .wave-text {
+                font-size: 1.4rem;
+            }
+
+            @keyframes wave {
+                0%, 40%, 100% {
+                    transform: translateY(0);
+                    color: #440b86;
+                }
+                20% {
+                    transform: translateY(-10px);
+                    color: #0ca22c;
+                    text-shadow: 0 0 5px rgba(12, 162, 44, 0.5);
+                }
+            }
         }
     </style>
 </head>
@@ -135,6 +203,14 @@
     <div class="login-container">
         <img src="./로고및 디자인/logo_new.png" alt="GrapeSEED Logo" class="logo">
         <h2 class="login-title">관리자 로그인</h2>
+        <div class="wave-text">
+            <div class="wave-line">
+                <span>안</span><span>녕</span><span>하</span><span>세</span><span>요</span>
+            </div>
+            <div class="wave-line">
+                <span>D</span><span>e</span><span>b</span><span>o</span><span>r</span><span>a</span><span>h</span><span>님</span><span>!</span>
+            </div>
+        </div>
         
         <form id="loginForm">
             <div class="form-group">
